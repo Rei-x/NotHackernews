@@ -1,0 +1,53 @@
+{
+    "projectId": "625ef146ef9052a8d3e7",
+    "projectName": "app",
+    "collections": [
+        {
+            "$id": "625ef1f9aae2f54ac2c1",
+            "$read": [
+                "role:all",
+                "role:guest"
+            ],
+            "$write": [
+                "role:all",
+                "role:guest"
+            ],
+            "name": "collection",
+            "enabled": true,
+            "permission": "collection",
+            "attributes": [
+                {
+                    "key": "isDone",
+                    "type": "boolean",
+                    "status": "available",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "content",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null
+                }
+            ],
+            "indexes": []
+        }
+    ],
+    "functions": [
+        {
+            "$id": "625f1141c9a85a4e1e50",
+            "name": "My Awesome Function",
+            "runtime": "node-16.0",
+            "path": "functions/My Awesome Function",
+            "entrypoint": "src/index.js",
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 15
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+# List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
+tasks:
+  - init: |
+      npm i -g appwrite-cli
+      cd /workspace/appwrite
+      docker-compose pull
+    command: |
+      cd /workspace/appwrite
+      docker-compose up
+  - init: yarn
+    command: yarn dev
+
+# List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
+ports:
+  - port: 3000
+    onOpen: open-browser

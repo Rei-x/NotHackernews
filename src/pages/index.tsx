@@ -1,5 +1,6 @@
 import {
   Button,
+  Checkbox,
   Col,
   Container,
   Input,
@@ -16,47 +17,13 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import api from "../api";
 import config from "../config";
+import useCollectionList from "../hooks/useCollection";
 import { Todo } from "../models/todo";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
-  const [todos, setTodos] = useState<Models.DocumentList<Todo>>();
+  const [todos, setTodos] = useCollectionList<Todo>({ collectionId: config.COLLECTION_ID });
   const [input, setInput] = useState("");
-
-  useEffect(() => {
-    (async () => {
-      if (!(await api.provider().account.get())) {
-        await api.provider().account.createAnonymousSession();
-      }
-      const apiData = await api
-        .provider()
-        .database.listDocuments<Todo>(config.COLLECTION_ID);
-      setTodos(apiData);
-    })();
-
-    return api
-      .provider()
-      .subscribe<Todo>(
-        `collections.${config.COLLECTION_ID}.documents`,
-        (data) => {
-          console.log(data);
-          if (data.event === "database.documents.create") {
-            setTodos((prev) => ({
-              ...prev!,
-              documents: [...prev!.documents, data.payload],
-            }));
-          }
-          if (data.event === "database.documents.update") {
-            setTodos((prev) => ({
-              ...prev!,
-              documents: prev!.documents.map((doc) =>
-                doc.$id === data.payload.$id ? data.payload : doc
-              ),
-            }));
-          }
-        }
-      );
-  }, []);
 
   const createTodo = () => {
     api
@@ -73,6 +40,10 @@ const Home: NextPage = () => {
       .database.updateDocument(config.COLLECTION_ID, id, { isDone });
   };
 
+  const deleteTodo = async (id: string) => {
+    await api.provider().database.deleteDocument(config.COLLECTION_ID, id);
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -85,26 +56,27 @@ const Home: NextPage = () => {
         <Row justify="center" align="center">
           <div>
             <h1>Todo list!</h1>
-            <div>
-              <Input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                shadow={false}
-                type="text"
-                placeholder="What you have to do?"
-                aria-label="content"
-                contentRight={
-                  <>
-                    <Spacer x={2} />
-                    <Button
-                      style={{ minWidth: "3rem" }}
-                      onClick={() => createTodo()}
-                    >
-                      +
-                    </Button>
-                  </>
-                }
-              />
+            <div style={{ marginBottom: "1rem" }}>
+              <form onSubmit={(e) => { e.preventDefault(); createTodo(); setInput(""); }}>
+                <Input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  shadow={false}
+                  type="text"
+                  placeholder="What you have to do?"
+                  aria-label="content"
+                  contentRight={
+                    <>
+                      <Spacer x={2} />
+                      <Button
+                        style={{ minWidth: "3rem" }}
+                      >
+                        +
+                      </Button>
+                    </>
+                  }
+                />
+              </form>
             </div>
             <Container
               style={{
@@ -122,14 +94,22 @@ const Home: NextPage = () => {
                 })
                 .map((document) => (
                   <motion.div layout key={document.$id}>
-                    <Row justify="space-between">
-                      <Text>{document.content}</Text>
-                      <Switch
-                        checked={document.isDone}
-                        onChange={(e) => {
-                          updateTodo(document.$id, e.target.checked);
-                        }}
-                      />
+                    <Row justify="space-between" align="center">
+                      <Col>
+                        <Text>{document.content}</Text>
+                      </Col>
+                      <Col>
+                        <Row align="center">
+                          <Checkbox
+                            checked={document.isDone}
+                            onChange={(e) => {
+                              updateTodo(document.$id, e);
+                            }}
+                          />
+                          <Spacer x={1} />
+                          <Button color="error" style={{ minWidth: "1rem" }} onClick={() => deleteTodo(document.$id)}>X</Button>
+                        </Row>
+                      </Col>
                     </Row>
                   </motion.div>
                 ))}

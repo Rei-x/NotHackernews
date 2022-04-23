@@ -7,7 +7,10 @@ const useCollectionList = <T>({ collectionId }: { collectionId: string }) => {
 
   useEffect(() => {
     (async () => {
-      if (!(await api.provider().account.getSession("current"))) {
+      try {
+        await api.provider().account.getSession("current")
+      }
+      catch {
         await api.provider().account.createAnonymousSession();
       }
       const apiData = await api

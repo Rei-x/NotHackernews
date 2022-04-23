@@ -64,6 +64,7 @@ const Home: NextPage = () => {
                   shadow={false}
                   type="text"
                   placeholder="What you have to do?"
+                  id="content"
                   aria-label="content"
                   contentRight={
                     <>

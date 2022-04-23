@@ -1,6 +1,7 @@
 # List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
 tasks:
-  - init: |
+  - name: Install appwrite
+    init: |
       npm i -g appwrite-cli
       cd /workspace/appwrite/appwrite
       docker-compose pull
@@ -8,11 +9,19 @@ tasks:
       cd /workspace/appwrite/appwrite
       docker-compose up -d
       gp sync-done appwrite
-  - command: |
+  - name: Prepare appwrite database - load backup and add gitpod url to origin
+    command: |
       gp sync-await appwrite
       cd /workspace/appwrite/appwrite
       sleep 3
       sudo sh -c "docker-compose exec -T mariadb sh -c 'exec mysql -uroot -p"rootsecretpassword"' < dump.sql"
+      url=`gp url 3000`
+      hostname="${url:8}"
+      sudo sh -c "docker-compose exec -e hostname=$hostname -T mariadb sh -c 'exec mysql -uroot -p"rootsecretpassword" appwrite -e "INSERT INTO _console_platforms VALUES (2,'"'6260031cb459b83f1480'"','"'6260030f877ddd7cb032'"','"'web'"','"'web'"','"''"','"''"','"'$hostname'"',1650459420,1650459420)"'"
+      sudo sh -c "docker-compose exec -T mariadb sh -c 'exec mysql -uroot -p"rootsecretpassword" appwrite -e "INSERT INTO _console_platforms_perms VALUES (3,'"'read'"','"'role:all'"','"'6260031cb459b83f1480'"'), (4,'"'write'"','"'role:all'"','"'6260031cb459b83f1480'"');"'"
+      sudo sh -c "docker-compose exec -T redis redis-cli del cache-_console:projects:6260030f877ddd7cb032"
+      endpointUrl=`gp url 8080`
+      sed -i -E "s|(NEXT_PUBLIC_ENDPOINT=).*|\1$endpointUrl|" $GITPOD_REPO_ROOT/.env.local
   - init: |
       cp .env.example .env.local
       npm install

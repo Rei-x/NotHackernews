@@ -7,9 +7,10 @@ tasks:
     command: |
       cd /workspace/appwrite/appwrite
       docker-compose up -d
-      sleep 2
-      sudo sh -c "docker-compose exec -T mariadb sh -c 'exec mysql -uroot -p"rootsecretpassword"' < dump.sql"
       gp sync-done appwrite
+  - command: |
+      gp sync-await appwrite
+      sudo sh -c "docker-compose exec -T mariadb sh -c 'exec mysql -uroot -p"rootsecretpassword"' < dump.sql"
   - init: |
       cp .env.example .env.local
       npm install

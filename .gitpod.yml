@@ -10,6 +10,7 @@ tasks:
       gp sync-done appwrite
   - command: |
       gp sync-await appwrite
+      cd /workspace/appwrite/appwrite
       sudo sh -c "docker-compose exec -T mariadb sh -c 'exec mysql -uroot -p"rootsecretpassword"' < dump.sql"
   - init: |
       cp .env.example .env.local

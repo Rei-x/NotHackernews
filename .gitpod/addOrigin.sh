@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 url=`gp url 3000`
 hostname="${url:8}"
 cd $GITPOD_REPO_ROOT/appwrite

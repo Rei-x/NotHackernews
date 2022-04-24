@@ -15,7 +15,14 @@ tasks:
       sleep 3
       npm run loadDB
       npm run gitpod:addOrigin
-  - init: |
+  - name: Appwrite functions
+    init: |
+      cd $GITPOD_REPO_ROOT/functions/FetchFromHackernews
+      npm i
+  - name: Install appwrite-cli
+    init: npm i -g appwrite-cli@0.15
+  - name: NextJS
+    init: |
       cp .env.example .env.local
       npm install
     command: |

@@ -1,5 +1,5 @@
 {
-    "projectId": "625ef146ef9052a8d3e7",
+    "projectId": "6260030f877ddd7cb032",
     "projectName": "app",
     "collections": [
         {
@@ -35,18 +35,184 @@
                 }
             ],
             "indexes": []
+        },
+        {
+            "$id": "62654a79d0fc2760be54",
+            "$read": [
+                "role:all"
+            ],
+            "$write": [],
+            "name": "News",
+            "enabled": true,
+            "permission": "collection",
+            "attributes": [
+                {
+                    "key": "title",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null
+                },
+                {
+                    "key": "upvotes",
+                    "type": "integer",
+                    "status": "available",
+                    "required": false,
+                    "array": false,
+                    "min": -9223372036854776000,
+                    "max": 9223372036854776000,
+                    "default": 0
+                },
+                {
+                    "key": "createdAt",
+                    "type": "integer",
+                    "status": "available",
+                    "required": false,
+                    "array": false,
+                    "min": -9223372036854776000,
+                    "max": 9223372036854776000,
+                    "default": null
+                },
+                {
+                    "key": "url",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "authorId",
+                    "type": "string",
+                    "status": "available",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null
+                },
+                {
+                    "key": "authorName",
+                    "type": "string",
+                    "status": "available",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null
+                },
+                {
+                    "key": "source",
+                    "type": "string",
+                    "status": "available",
+                    "required": false,
+                    "array": false,
+                    "elements": [
+                        "hackernews",
+                        "origin"
+                    ],
+                    "format": "enum",
+                    "default": "origin"
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "upvotes",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "upvotes"
+                    ],
+                    "orders": [
+                        "DESC"
+                    ]
+                }
+            ]
+        },
+        {
+            "$id": "62654aec35a6f8a05873",
+            "$read": [
+                "role:all"
+            ],
+            "$write": [],
+            "name": "Comments",
+            "enabled": true,
+            "permission": "collection",
+            "attributes": [
+                {
+                    "key": "content",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null
+                },
+                {
+                    "key": "upvotes",
+                    "type": "integer",
+                    "status": "available",
+                    "required": false,
+                    "array": false,
+                    "min": -9223372036854776000,
+                    "max": 9223372036854776000,
+                    "default": 0
+                },
+                {
+                    "key": "createdAt",
+                    "type": "integer",
+                    "status": "available",
+                    "required": false,
+                    "array": false,
+                    "min": -9223372036854776000,
+                    "max": 9223372036854776000,
+                    "default": null
+                },
+                {
+                    "key": "newsId",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null
+                },
+                {
+                    "key": "authorId",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "newsId",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "newsId"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                }
+            ]
         }
     ],
     "functions": [
         {
-            "$id": "625f1141c9a85a4e1e50",
-            "name": "My Awesome Function",
+            "$id": "62655e226169b72dd927",
+            "name": "FetchFromHackernews",
             "runtime": "node-16.0",
-            "path": "functions/My Awesome Function",
+            "path": "functions/FetchFromHackernews",
             "entrypoint": "src/index.js",
             "execute": [],
             "events": [],
-            "schedule": "",
+            "schedule": "0 * * * *",
             "timeout": 15
         }
     ]

@@ -1,7 +1,8 @@
 const config = {
   ENDPOINT: process.env.NEXT_PUBLIC_ENDPOINT!,
   PROJECT: process.env.NEXT_PUBLIC_PROJECT!,
-  COLLECTION_ID: process.env.NEXT_PUBLIC_COLLECTION_ID!,
+  NEWS_COLLECTION_ID: process.env.NEXT_PUBLIC_NEWS_COLLECTION_ID!,
+  COMMENTS_COLLECTION_ID: process.env.NEXT_PUBLIC_COMMENTS_COLLECTION_ID!,
 };
 
 export default config;

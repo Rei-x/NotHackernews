@@ -7,7 +7,7 @@ import config from "../config";
 import useCollectionList from "../hooks/useCollection";
 import { NewsModel } from "../models/news";
 
-const News = ({ news, index }: { news: NewsModel; index: number }) => {
+const News = ({ news, index }: { news: NewsModel; index: number; }) => {
   const commentsQuery = useCollectionList({
     collectionId: config.COMMENTS_COLLECTION_ID,
     queries: [Query.equal("newsId", news.$id)],
@@ -16,11 +16,11 @@ const News = ({ news, index }: { news: NewsModel; index: number }) => {
   return (
     <div>
       {index}. <BiUpvote />{" "}
-      <Link color="text" href={news.url}>
+      <Link target="_blank" color="text" href={news.url}>
         {news.title}
       </Link>{" "}
       <Text small>
-        <Link href={news.url || "https://google.pl"}>
+        <Link target="_blank" href={news.url}>
           ({new URL(news.url).hostname})
         </Link>
       </Text>
